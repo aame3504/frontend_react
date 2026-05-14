@@ -1,51 +1,89 @@
-import { useState } from 'react'
 import './App.css'
+import ScoresTable from './components/ScoresTable'
+import { useState } from 'react'
 
-const scores = [
-  { 이름: "John", 국어: 90, 영어: 90, 수학: 80, 과학: 80 },
-  { 이름: "Piter", 국어: 90, 영어: 90, 수학: 80, 과학: 80 },
-  { 이름: "Susan", 국어: 90, 영어: 90, 수학: 80, 과학: 80 },
-  { 이름: "Sue", 국어: 90, 영어: 90, 수학: 80, 과학: 80 },
-]
+const style = {
+  width:"500px",
+  height:"300px",
+  display: "flex",
+  flexDirection: "column",
+  justifyContent: "center",
+  alignItems: "center"
+}
 
-const sources = [0, 1, 2, 3]
+const initialscores = [
+    {이름:"John", 국어: 90, 영어:90, 수학: 80, 과학: 80 },
+    {이름:"Piter",국어: 90, 영어:90, 수학: 80, 과학: 80 },
+    {이름:"Susan",국어: 90, 영어:90, 수학: 80, 과학: 80 },
+    {이름:"Sue",국어: 90, 영어:90, 수학: 80, 과학: 80 },
+    
+  ]
 
-let tmp = []
-
-for (let item of sources) {
-  tmp.push(item * 2)
+const initialInfo = {
+  name: "john",
+  kor: null,
+  eng: null,
+  math: null,
+  sci: null,
 }
 
 function App() {
-  const [count, setCount] = useState(0)
+  const [info, setInfo] = useState(initialInfo)
+  const [scores, Setscores] = useState(initialscores)
+  const handleChange = (event) => {
+    const {name,value} = event.target;
+    setInfo((prev)=>(
+      {...prev, [event.target.name]: event.target.value}
+    ))
+    console.log(event.target.name)
+  }
 
+  const handleSubmit=(event)=>{
+    event.preventDefault();
+    Setscores((prev)=>(
+      [...prev,info]
+    ))
+}
+  
   return (
-    <table border="1">
-      <thead>
-        <tr>
-          {
-            Object.keys(scores[0]).map((key) => (
-              <th key={key}>{key}</th>
-            ))
-          }
-        </tr>
-      </thead>
+    <>
+          <ScoresTable scores={scores}/>
+          <form onSubmit ={handleSubmit}>
+            <div>name: <input 
+                type="text"
+                name = "name"
+                value = {info.name}
+                  onChange={handleChange} 
+                /></div>
+            <div>kor: <input 
+                type="number"
+                name = "kor"
+                value = {info.kor}
+                onChange={handleChange} 
+                /></div>
+            <div>eng: <input 
+                type="number"
+                name = "eng"
+                value = {info.eng}
+                onChange={handleChange} 
+                /></div>
+            <div>math: <input 
+                type="number"
+                name = "math"
+                value = {info.math}
+                onChange={handleChange} 
+                /></div>
+            <div>sci: <input 
+                type="number"
+                name = "sci"
+                value = {info.sci}
+                onChange={handleChange} 
+                /></div>
+                <button>submit</button>
+          </form>
+    </>
+    
 
-      <tbody>
-        {
-          scores.map((item, idx) => (
-            <tr key={idx}>
-              {
-                Object.values(item).map((value, i) => (
-                  <td key={i}>{value}</td>
-                ))
-              }
-            </tr>
-          ))
-        }
-      </tbody>
-    </table>
   )
 }
-
 export default App
